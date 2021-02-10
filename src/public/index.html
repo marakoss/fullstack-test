@@ -1,0 +1,37 @@
+<form id="handledform">
+    <input name="scrambled" type="text" placeholder="scrambled" />
+    <input name="needle" type="text" placeholder="needle" />
+    <input type="submit" value="scramble" />
+</form>
+
+<script>
+
+    const form = document.getElementById('handledform');
+    const api_url = 'http://localhost:8080/isscramble';
+
+    function processForm(e) {
+        if (e.preventDefault) e.preventDefault();
+
+        const data = new FormData(e.target);
+
+        fetch(api_url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                scrambled: data.get('scrambled'),
+                needle: data.get('needle'),
+            })
+        })
+        .then(response => response.json())
+        .then(function(data) {
+            alert(data.result);
+        });
+
+        return false;
+    }
+
+    form.addEventListener("submit", processForm);
+
+</script>
